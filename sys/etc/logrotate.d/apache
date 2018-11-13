@@ -1,0 +1,21 @@
+# to be processed by frep
+/log/apache/*-error.log
+/log/apache/*-access.log
+/logs/apache/*-error.log
+/logs/apache/*-access.log
+/log/*-error.log
+/log/*-access.log
+/logs/*-error.log
+/logs/*-access.log
+/var/log/apache/*.log
+{
+  daily
+  missingok
+  rotate {{.Env.APACHE_ROTATE}}
+  compress
+  delaycompress
+  notifempty
+  create 0640 {{.Env.APACHE_USER}} {{.Env.APACHE_GROUP}}
+  sharedscripts
+  copytruncate
+}
