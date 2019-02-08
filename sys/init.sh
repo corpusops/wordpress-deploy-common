@@ -42,7 +42,7 @@ export APACHE_USER=${APACHE_USER-"www-data"}
 export APACHE_GROUP=${APACHE_GROUP-"www-data"}
 export APACHE_LOGS_DIR="${APACHE_LOGS_DIR:-"/var/log/apache"}"
 export APACHE_LOGS_DIRS="/logs /log $APACHE_LOGS_DIR"
-IMAGE_MODES="(apache|fg)"
+IMAGE_MODES="(apache|fg|cron)"
 NO_START=${NO_START-}
 WORDPRESS_CONF_PREFIX="${WORDPRESS_CONF_PREFIX:-"WORDPRESS__"}"
 DEFAULT_NO_MIGRATE=
@@ -306,7 +306,8 @@ if [[ -z "$@" ]]; then
             log "Missing: $cfg"
             exit 1
         fi
-        SUPERVISORD_CONFIGS="/etc/supervisor.d/logrotate /etc/supervisor.d/rsyslog $cfg" exec /bin/supervisord.sh
+        SUPERVISORD_CONFIGS="$(echo /etc/supervisor.d/logrotate /etc/supervisor.d/rsyslog /etc/supervisor.d/cron $cfg \
+           |xargs -n1|awk '!seen[$0]++')" exec /bin/supervisord.sh
     fi
 else
     if [[ "${1-}" = "shell" ]];then shift;fi
