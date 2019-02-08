@@ -104,7 +104,7 @@ function define_env_settings($key, $value) {
 array_walk($_ENV, define_env_settings);
 
 /** Sets up WordPress vars and included files. */
-if file_exists(ABSPATH . 'local.php') {
+if (file_exists(ABSPATH . 'local.php')) {
   require_once(ABSPATH . 'local.php');
 }
 require_once(ABSPATH . 'wp-settings.php');
