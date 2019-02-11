@@ -24,7 +24,7 @@ USER root
 
 # setup project timezone, dependencies, user & workdir, gosu
 RUN bash -c 'set -ex \
-    && whoami && : "set correct timezone" \
+    && : "set correct timezone" \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && : "install packages" \
     && apt-get update -qq \
@@ -37,14 +37,15 @@ RUN bash -c 'set -ex \
 ADD --chown=www-data:www-data public_html  /code/public_html
 ADD                           sys          /code/sys
 ADD         local/wordpress-deploy-common/ /code/local/wordpress-deploy-common/
-
 # We make an intermediary init folder to allow to have the
 # entrypoint mounted as a volume in dev
 RUN bash -c 'set -ex \
     && cd /code && mkdir init \
+    && chown www-data:www-data -R . \
     && cp -frnv /code/local/wordpress-deploy-common/public_html/* public_html \
     && cp -frnv /code/local/wordpress-deploy-common/sys/* sys \
-    && ln -svf $(pwd)/sys/init.sh /init.sh \
+    && cp -frnv sys/* init \
+    && ln -sf $(pwd)/init/init.sh /init.sh \
     && gosu www-data:www-data bash -c "\
     : add extra deployment here"'
 
