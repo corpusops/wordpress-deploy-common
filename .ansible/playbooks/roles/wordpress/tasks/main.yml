@@ -20,11 +20,6 @@
     #update_opts: '--recursive'
   when: "cops_wordpress_step_rsync"
 - template:
-    src: "dbsmartbackup.yml"
-    dest: "{{cops_wordpress_dir}}/local/backup/setup/reconfigure.yml"
-    mode: "0640"
-    trim_blocks: false
-- template:
     src: "local.php"
     dest: "{{cops_wordpress_dir}}/local.php"
     mode: "0644"
