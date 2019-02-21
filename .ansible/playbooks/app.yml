@@ -5,8 +5,6 @@
   tasks:
   - when: ["cops_wordpress_lifecycle_app|default(true)"]
     tags: ["cops_wordpress_lifecycle_app"]
-    include_role: {name: wordpress_vars, allow_duplicates: false}
-  - when: ["cops_wordpress_lifecycle_app"]
-    tags: ["cops_wordpress_lifecycle_app"]
     block:
-    - include_role: {name: wordpress,    allow_duplicates: false}
+    - include_role: {name: wordpress_vars, allow_duplicates: false}
+    - include_role: {name: wordpress,      allow_duplicates: false}
