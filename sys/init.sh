@@ -224,6 +224,15 @@ services_setup() {
 
 fixperms() {
     if [[ -n $NO_FIXPERMS ]];then return 0;fi
+    if [ -d /etc/logrotate.d/rsyslog ];then
+        rm /etc/logrotate.d/rsyslog
+    fi
+    if [ -e /var/log/apache2/ ];then
+        chmod 755 /var/log/apache2/
+    fi
+    if [ -e /etc/logrotate.d/apache2 ];then
+        sed -i -r 's!^(/var/log/apache2/*.log)!/logs/*.log \1!g' /etc/logrotate.d/apache2
+    fi
     for i in /etc/{crontabs,cron.d} /etc/logrotate.d /etc/supervisor.d;do
         if [ -e $i ];then
             while read f;do
