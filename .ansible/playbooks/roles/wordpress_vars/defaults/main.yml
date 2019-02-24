@@ -64,6 +64,8 @@ cops_wordpress_sentry_dsn: ''
 cops_wordpress_db_charset: 'utf8'
 cops_wordpress_db_collate: ''
 cops_wordpress_sentry_error_types: "E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED"
+cops_wordpress_http_protect_user: "root"
+cops_wordpress_http_protect_password: "rootroot"
 cops_wordpress_docker_env_freeform: |-
   {{ cops_wordpress_docker_env_defaults}}
   {{ cops_wordpress_docker_env_extra}}
@@ -83,6 +85,8 @@ cops_wordpress_docker_env_defaults: |-
   WORDPRESS_DB_NAME={{cops_wordpress_db_name}}
   WORDPRESS_TABLE_PREFIX={{cops_wordpress_db_prefix}}
   WORDPRESS__DEPLOY_ENV={{cops_wordpress_deploy_env}}
+  WORDPRESS__HTTP_PROTECT_USER={{cops_wordpress_http_protect_user}}
+  WORDPRESS__HTTP_PROTECT_PASSWORD={{cops_wordpress_http_protect_password}}
   {% if cops_wordpress_devmode %}
   WORDPRESS_DEBUG=y
   {% endif %}
