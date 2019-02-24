@@ -41,7 +41,8 @@ ADD         local/wordpress-deploy-common/ /code/local/wordpress-deploy-common/
 # entrypoint mounted as a volume in dev
 RUN bash -c 'set -ex \
     && cd /code && mkdir init \
-    && chown www-data:www-data -R . \
+    && find /code -type f -not -user www-data \
+    | while read f;do chown www-data:www-data "$f";done \
     && cp -frnv /code/local/wordpress-deploy-common/public_html/* public_html \
     && cp -frnv /code/local/wordpress-deploy-common/sys/* sys \
     && cp -frnv sys/* init \
