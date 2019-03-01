@@ -40,7 +40,6 @@
   with_items: "{{cops_wordpress_registries}}"
 - shell: |
     set -ex
-    falsd
     cd "{{cops_wordpress_dir}}"
     {{cops_wordpress_dc}} build {{cops_wordpress_build_args}}
   when:
