@@ -50,10 +50,10 @@ RUN bash -c 'set -ex \
     && gosu www-data:www-data bash -c "\
     : add extra deployment here"'
 
-# image will drop privileges itself using gosu
-CMD chmod 0644 /etc/cron.d/wordpress
+RUN chmod 0644 /etc/cron.d/wordpress
 
 WORKDIR /code/public_html
 
+# image will drop privileges itself using gosu
 ENTRYPOINT []
 CMD "/init.sh"
