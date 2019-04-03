@@ -69,7 +69,11 @@ cops_wordpress_http_protect_password: "rootroot"
 cops_wordpress_docker_env_freeform: |-
   {{ cops_wordpress_docker_env_defaults}}
   {{ cops_wordpress_docker_env_extra}}
+cops_wordpress_logrotate: "365"
+cops_wordpress_admin_allowed_ips: []
 cops_wordpress_docker_env_defaults: |-
+  WORDPRESS_LOGROTATE={{cops_wordpress_logrotate}}
+  WORDPRESS_ALLOWED_ADMIN_IPS={{cops_wordpress_admin_allowed_ips|join("-|_")}}
   MYSQL_HOST={{cops_wordpress_db_host}}
   MYSQL_PORT={{cops_wordpress_db_port}}
   MYSQL_DATABASE={{cops_wordpress_db_name}}
