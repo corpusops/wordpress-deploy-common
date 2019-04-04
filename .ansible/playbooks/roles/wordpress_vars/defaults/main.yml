@@ -72,7 +72,9 @@ cops_wordpress_docker_env_freeform: |-
 cops_wordpress_logrotate: "365"
 cops_wordpress_admin_allowed_ips: []
 cops_wordpress_remote_ips: []
+cops_wordpress_login_url: "wp-login.php"
 cops_wordpress_docker_env_defaults: |-
+  WORDPRESS_LOGIN_URL={{cops_wordpress_login_url}}
   WORDPRESS_REMOTE_IPS={{cops_wordpress_remote_ips|join("-|_")}}
   WORDPRESS_LOGROTATE={{cops_wordpress_logrotate}}
   WORDPRESS_ALLOWED_ADMIN_IPS={{cops_wordpress_admin_allowed_ips|join("-|_")}}
