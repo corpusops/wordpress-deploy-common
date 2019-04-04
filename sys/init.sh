@@ -42,6 +42,7 @@ export APACHE_USER=${APACHE_USER-"www-data"}
 export APACHE_GROUP=${APACHE_GROUP-"www-data"}
 export APACHE_LOGS_DIR="${APACHE_LOGS_DIR:-"/var/log/apache"}"
 export APACHE_LOGS_DIRS="/logs /log $APACHE_LOGS_DIR"
+export WORDPRESS_USE_REALIP=${WORDPRESS_USE_REALIP-1}
 IMAGE_MODES="(apache|fg|cron)"
 NO_START=${NO_START-}
 WORDPRESS_CONF_PREFIX="${WORDPRESS_CONF_PREFIX:-"WORDPRESS__"}"
@@ -189,6 +190,15 @@ services_setup() {
     fi
     # configure wp-config.php
     ( docker-entrypoint.sh sh -c 'echo wordpress configuration done >&2' )
+    if [ "x$WORDPRESS_USE_REALIP" = "x1" ] && ! (grep -q "Use X-Forwarded-For HTTP Header to Get" "$PROJECT_DIR/wp-config.php" );then
+        cat >> "$PROJECT_DIR/wp-config.php" <<EOF
+// Use X-Forwarded-For HTTP Header to Get Visitor's Real IP Address
+if ( isset( \$_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+    \$http_x_headers = explode( ',', \$_SERVER['HTTP_X_FORWARDED_FOR'] );
+    \$_SERVER['REMOTE_ADDR'] = \$http_x_headers[0];
+}
+EOF
+    fi
     # alpine linux has /etc/crontabs/ and ubuntu based vixie has /etc/cron.d/
     if [ -e /etc/cron.d ] && [ -e /etc/crontabs ];then cp -fv /etc/crontabs/* /etc/cron.d >&2;fi
     # Run any migration
