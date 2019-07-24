@@ -106,6 +106,7 @@ cops_wordpress_dotenv: |-
   WORDPRESS_PY_VER={{ cops_wordpress_py_ver }}
   WORDPRESS_NAME={{ cops_wordpress_name }}
   COMPOSE_PROJECT_NAME={{cops_wordpress_composename}}
+  CONTROL_COMPOSE_FILES={{cops_wordpress_compose_files|join(' ')}}
   CI_COMMIT_SHA={{cops_wordpress_gitref}}
   WORDPRESS_IMAGE={{ cops_wordpress_docker_image }}
   WORDPRESS_IMAGE_VERSION={{cops_wordpress_docker_tag}}
