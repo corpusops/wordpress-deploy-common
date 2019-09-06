@@ -52,6 +52,12 @@ DEFAULT_NO_COLLECT_STATIC=
 if [[ -n $@ ]];then
     DEFAULT_NO_STARTUP_LOGS=1
 fi
+
+# export back the gateway ip as a host if ip is available in container
+if ( ip -4 route list match 0/0 &>/dev/null );then
+    ip -4 route list match 0/0 \
+        | awk '{print $3" host.docker.internal"}' >> /etc/hosts
+fi
 NO_STARTUP_LOGS=${NO_STARTUP_LOGS-${NO_MIGRATE-$DEFAULT_NO_STARTUP_LOGS}}
 NO_MIGRATE=${NO_MIGRATE-$DEFAULT_NO_MIGRATE}
 DEFAULT_NO_IMAGE_SETUP=1
