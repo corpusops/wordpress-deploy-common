@@ -108,3 +108,8 @@ if (file_exists(ABSPATH . 'local.php')) {
   require_once(ABSPATH . 'local.php');
 }
 require_once(ABSPATH . 'wp-settings.php');
+// Use X-Forwarded-For HTTP Header to Get Visitor's Real IP Address
+if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+    $http_x_headers = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+    $_SERVER['REMOTE_ADDR'] = $http_x_headers[0];
+}
