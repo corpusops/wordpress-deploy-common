@@ -150,7 +150,7 @@ configure() {
     for i in local/*deploy-common/etc local/*deploy-common/sys/etc sys/etc;do
         if [ -d $i ];then cp -rfnv $i/* etc >&2;fi
     done
-    # install wtih envsubst any template file to / (eg: logrotate & cron file)
+    # install with envsubst any template file to / (eg: logrotate & cron file)
     for i in $(find etc -name "*.envsubst" -type f 2>/dev/null);do
         di="/$(dirname $i)" \
             && if [ ! -e "$di" ];then mkdir -pv "$di" >&2;fi \
@@ -158,7 +158,7 @@ configure() {
             && CONF_PREFIX="$WORDPRESS_CONF_PREFIX" confenvsubst.sh "/$i" \
             && rm -f "/$i"
     done
-    # install wtih frep any template file to / (eg: logrotate & cron file)
+    # install with frep any template file to / (eg: logrotate & cron file)
     for i in $(find etc -name "*.frep" -type f 2>/dev/null);do
         d="$(dirname "$i")/$(basename "$i" .frep)" \
             && di="/$(dirname $d)" \
@@ -166,6 +166,11 @@ configure() {
             && echo "Generating with frep $i:/$d" >&2 \
             && frep "$i:/$d" --overwrite
     done
+    # install wp-config.php config file from wp-config-corpusops.php
+    if [ -f "${DOC_ROOT}/corpusops-wp-config.php" ]; then
+        cp "${DOC_ROOT}/corpusops-wp-config.php" "${DOC_ROOT}/wp-config.php"
+    fi
+
     if [[ "$WORDPRESS_FLAVOR" = "apache" ]];then
         a2enmod remoteip deflate headers proxy proxy_http ssl rewrite
     fi
